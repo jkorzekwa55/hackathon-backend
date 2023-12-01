@@ -24,11 +24,8 @@ public class User implements B3authUser {
     @Column(length = 45)
     private String name;
     @Column(length = 45)
-    private String surname;
-    @Column(length = 45)
     private String email;
-    @Column(length = 45)
-    private String phoneNumber;
+    private String socialMediaLink;
     private LocalDateTime created;
 
     private boolean disabled;
