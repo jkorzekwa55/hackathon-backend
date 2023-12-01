@@ -1,0 +1,16 @@
+version: '3'
+services:
+  db:
+    image: postgres:14.1-alpine
+    restart: always
+    environment:
+      POSTGRES_USERNAME: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: hackathon-db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres14:/var/lib/postgresql/data
+volumes:
+  postgres14:
+    driver: local
