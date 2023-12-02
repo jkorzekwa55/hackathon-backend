@@ -16,7 +16,6 @@ import lombok.Setter;
 @NoArgsConstructor
 public class EventResponseDto {
     private Long id;
-    private String name;
     private String message;
     private UserDto sender;
     private EventDto event;

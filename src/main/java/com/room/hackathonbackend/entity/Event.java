@@ -21,6 +21,8 @@ public class Event {
 
     @Column(length = 64)
     private String name;
+    @Column(length = 256)
+    private String description;
 
     @ManyToOne
     private User creator;
