@@ -19,7 +19,7 @@ public class Event {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Long id;
 
     @Column(length = 64)
     private String name;
@@ -31,10 +31,7 @@ public class Event {
     @Lob
     private Blob image;
 
-    @Column(length = 10)
     private double longitude;
-
-    @Column(length = 10)
     private double magnitude;
 
     private boolean inProgress;

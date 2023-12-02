@@ -8,7 +8,6 @@ import org.springframework.security.core.GrantedAuthority;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -31,6 +30,10 @@ public class User implements B3authUser {
 
     @OneToMany(mappedBy = "creator")
     private Set<Event> events;
+    @OneToMany(mappedBy = "receiver")
+    private Set<EventResponse> receivedNotifications;
+    @OneToMany(mappedBy = "sender")
+    private Set<EventResponse> sendNotification;
 
     private boolean disabled;
     private boolean initialised;
