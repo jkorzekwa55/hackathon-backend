@@ -2,17 +2,24 @@ package com.room.hackathonbackend.service;
 
 import com.befree.b3authauthorizationserver.B3authUser;
 import com.befree.b3authauthorizationserver.B3authUserService;
+import com.directai.directaiexceptionhandler.DirectServerExceptionCode;
+import com.directai.directaiexceptionhandler.exception.DirectException;
+import com.directai.directaiexceptionhandler.exception.DirectExceptionFrame;
+import com.room.hackathonbackend.dto.EventResponseDto;
 import com.room.hackathonbackend.dto.UserDto;
 import com.room.hackathonbackend.dto.UserPutDto;
+import com.room.hackathonbackend.entity.EventResponse;
 import com.room.hackathonbackend.entity.User;
 import com.room.hackathonbackend.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -48,5 +55,12 @@ public class UserService implements B3authUserService {
     public B3authUser findByEmail(String email) {
         return userRepository.findByEmail(email)
                 .orElse(null);
+    }
+
+    public List<EventResponseDto> getUserNotifications(Long id, Authentication authentication) throws DirectException {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new DirectException("sds","", DirectServerExceptionCode.D4000));
+        return user.getReceivedNotifications().stream().map(r -> modelMapper.map(r, EventResponseDto.class)).toList();
+
     }
 }
