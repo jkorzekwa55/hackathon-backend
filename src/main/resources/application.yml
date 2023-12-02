@@ -19,3 +19,9 @@ springdoc:
   api-docs:
     path: /api-docs
 
+logging:
+  level:
+    root: DEBUG
+
+server:
+  max-http-request-header-size: 30KB

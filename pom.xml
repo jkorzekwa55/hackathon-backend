@@ -57,7 +57,7 @@
         <dependency>
             <groupId>io.github.the-directai</groupId>
             <artifactId>b3-authorization-server</artifactId>
-            <version>0.1.20231129155024-SNAPSHOT</version>
+            <version>0.1.0.20231202012316-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.modelmapper</groupId>

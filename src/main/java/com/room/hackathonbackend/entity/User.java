@@ -7,6 +7,7 @@ import org.springframework.security.core.GrantedAuthority;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -25,6 +26,7 @@ public class User implements B3authUser {
     private String name;
     @Column(length = 45)
     private String email;
+    private int birthYear;
     private String socialMediaLink;
     private LocalDateTime created;
 
