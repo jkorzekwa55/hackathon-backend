@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/notification")
+@RequestMapping("/api/notification")
 @AllArgsConstructor
 public class EventResponseController {
     private EventResponseService eventResponseService;
