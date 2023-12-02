@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -46,7 +47,7 @@ public class EventService {
 
     public List<EventDto> getEventsInRadius(UserLocationDto userLocation, Integer radius) {
 
-        List<EventDto> closeEvents = Arrays.asList();
+        List<Event> closeEvents = new ArrayList<>();
 
         for (Event event : eventRepository.findAll()) {
             double dLat = Math.toRadians(event.getLatitude() - userLocation.getLatitude());
@@ -59,9 +60,9 @@ public class EventService {
             double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
             if (c * 6371 <= radius)
-                closeEvents.add(modelMapper.map(event, EventDto.class));
+                closeEvents.add(event);
         }
 
-        return closeEvents;
+        return closeEvents.stream().map(m -> modelMapper.map(m, EventDto.class)).toList();
     }
 }

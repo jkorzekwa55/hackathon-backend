@@ -73,8 +73,8 @@ public class UserService implements B3authUserService {
                 .orElse(null);
     }
 
-    public List<EventResponseDto> getUserNotifications(Long id, Authentication authentication) throws DirectException {
-        User user = userRepository.findById(id)
+    public List<EventResponseDto> getUserNotifications(Authentication authentication) throws DirectException {
+        User user = userRepository.findById((Long) authentication.getPrincipal())
                 .orElseThrow(() -> new DirectException("User not found", "", DirectServerExceptionCode.D4000));
         return user.getReceivedNotifications().stream().map(r -> modelMapper.map(r, EventResponseDto.class)).toList();
 
