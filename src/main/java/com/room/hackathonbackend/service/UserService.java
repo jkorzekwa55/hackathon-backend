@@ -4,10 +4,10 @@ import com.befree.b3authauthorizationserver.B3authUser;
 import com.befree.b3authauthorizationserver.B3authUserService;
 import com.directai.directaiexceptionhandler.DirectServerExceptionCode;
 import com.directai.directaiexceptionhandler.exception.DirectException;
-import com.room.hackathonbackend.dto.EventResponseDto;
-import com.room.hackathonbackend.dto.UserDataFillDto;
-import com.room.hackathonbackend.dto.UserDto;
+import com.room.hackathonbackend.dto.*;
+import com.room.hackathonbackend.entity.Event;
 import com.room.hackathonbackend.entity.User;
+import com.room.hackathonbackend.repository.EventRepository;
 import com.room.hackathonbackend.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -15,7 +15,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
+
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -73,8 +75,21 @@ public class UserService implements B3authUserService {
 
     public List<EventResponseDto> getUserNotifications(Long id, Authentication authentication) throws DirectException {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new DirectException("sds","", DirectServerExceptionCode.D4000));
+                .orElseThrow(() -> new DirectException("User not found", "", DirectServerExceptionCode.D4000));
         return user.getReceivedNotifications().stream().map(r -> modelMapper.map(r, EventResponseDto.class)).toList();
 
     }
+
+    public EventDto getUserEvent(Long id, Long eventId, Authentication authentication) throws DirectException{
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new DirectException("User not found","", DirectServerExceptionCode.D4000));
+
+        for (Event event : user.getEvents()) {
+            if (Objects.equals(event.getId(), eventId))
+                return modelMapper.map(event, EventDto.class);
+        }
+        return null;
+    }
+
+
 }

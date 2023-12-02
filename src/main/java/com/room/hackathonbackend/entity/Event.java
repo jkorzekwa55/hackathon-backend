@@ -2,17 +2,15 @@ package com.room.hackathonbackend.entity;
 
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
+import lombok.*;
 import java.sql.Blob;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Getter
 @Setter
 @Entity
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class Event {
@@ -28,11 +26,14 @@ public class Event {
     private User creator;
     private LocalDateTime plannedOn;
 
+    @OneToMany(mappedBy = "event")
+    private Set<EventResponse> eventResponses;
+
     @Lob
     private Blob image;
 
     private double longitude;
-    private double magnitude;
+    private double latitude;
 
     private boolean inProgress;
     private boolean happened;

@@ -1,9 +1,7 @@
 package com.room.hackathonbackend.controller;
 
 import com.directai.directaiexceptionhandler.exception.DirectException;
-import com.room.hackathonbackend.dto.EventResponseDto;
-import com.room.hackathonbackend.dto.UserDataFillDto;
-import com.room.hackathonbackend.dto.UserDto;
+import com.room.hackathonbackend.dto.*;
 import com.room.hackathonbackend.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -30,13 +28,15 @@ public class UserController {
         return ResponseEntity.ok(userService.fillDataUser(userDataFillDto, authentication));
     }
 
-    @GetMapping
-    public String test() {
-        return "test123";
-    }
-
     @GetMapping("/{id}/notifications")
     public ResponseEntity<List<EventResponseDto>> getNotifications(@PathVariable("id") Long id, Authentication authentication) throws DirectException {
         return ResponseEntity.ok(userService.getUserNotifications(id, authentication));
     }
+
+    @GetMapping("/{id}/events/{eventId}")
+    public ResponseEntity<EventDto> getEvent(@PathVariable("id") Long id, @PathVariable("eventId") Long eventId, Authentication authentication) throws DirectException {
+        return ResponseEntity.ok(userService.getUserEvent(id, eventId, authentication));
+    }
+
+
 }
