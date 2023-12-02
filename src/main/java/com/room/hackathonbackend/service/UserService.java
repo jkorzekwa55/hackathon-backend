@@ -4,24 +4,21 @@ import com.befree.b3authauthorizationserver.B3authUser;
 import com.befree.b3authauthorizationserver.B3authUserService;
 import com.directai.directaiexceptionhandler.DirectServerExceptionCode;
 import com.directai.directaiexceptionhandler.exception.DirectException;
-import com.directai.directaiexceptionhandler.exception.DirectExceptionFrame;
-import com.room.hackathonbackend.dto.EventResponseDto;
-import com.room.hackathonbackend.dto.UserDto;
-import com.room.hackathonbackend.dto.UserPutDto;
-import com.room.hackathonbackend.entity.EventResponse;
+import com.room.hackathonbackend.dto.*;
+import com.room.hackathonbackend.entity.Event;
 import com.room.hackathonbackend.entity.User;
 import com.room.hackathonbackend.repository.EventRepository;
 import com.room.hackathonbackend.repository.UserRepository;
 import lombok.AllArgsConstructor;
-import org.hibernate.boot.model.relational.NamedAuxiliaryDatabaseObject;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
