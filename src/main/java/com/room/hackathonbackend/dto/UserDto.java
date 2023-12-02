@@ -11,8 +11,5 @@ import lombok.Setter;
 public class UserDto {
     private String name;
     private int birthYear;
-    private Boolean disabled;
-    private Boolean initialised;
     private String socialMediaLink;
-    private String email;
 }

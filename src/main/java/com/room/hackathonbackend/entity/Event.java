@@ -23,6 +23,7 @@ public class Event {
     private String name;
     @Column(length = 512)
     private String description;
+
     @ManyToOne
     private User creator;
     private LocalDateTime plannedOn;

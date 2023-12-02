@@ -38,5 +38,4 @@ public class UserController {
         return ResponseEntity.ok(userService.getUserEvent(id, eventId, authentication));
     }
 
-
 }
