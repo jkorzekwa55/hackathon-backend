@@ -1,6 +1,8 @@
 package com.room.hackathonbackend.controller;
 
+import com.directai.directaiexceptionhandler.exception.DirectException;
 import com.room.hackathonbackend.dto.EventDto;
+import com.room.hackathonbackend.dto.EventPostDto;
 import com.room.hackathonbackend.dto.UserLocationDto;
 import com.room.hackathonbackend.service.EventService;
 import lombok.AllArgsConstructor;
@@ -15,8 +17,13 @@ import java.util.List;
 @AllArgsConstructor
 public class EventController {
     private EventService eventService;
-    @GetMapping("/events/area/{radius}")
-    public ResponseEntity<List<EventDto>> getEventsInRadius(@RequestBody UserLocationDto userLocation, @PathVariable("radius") Integer radius, Authentication authentication){
-        return ResponseEntity.ok(eventService.getEventsInRadius(userLocation, radius, authentication));
+    @GetMapping("/area/{radius}")
+    public ResponseEntity<List<EventDto>> getEventsInRadius(@RequestBody UserLocationDto userLocation, @PathVariable("radius") Integer radius){
+        return ResponseEntity.ok(eventService.getEventsInRadius(userLocation, radius));
+    }
+
+    @PostMapping
+    public ResponseEntity<EventDto> addEvent(@RequestBody EventPostDto eventPostDto, Authentication authentication) throws DirectException {
+        return ResponseEntity.ok(eventService.addEvent(eventPostDto, authentication));
     }
 }

@@ -1,11 +1,17 @@
 package com.room.hackathonbackend.service;
 
+import com.directai.directaiexceptionhandler.DirectServerExceptionCode;
+import com.directai.directaiexceptionhandler.exception.DirectException;
 import com.room.hackathonbackend.dto.EventDto;
+import com.room.hackathonbackend.dto.EventPostDto;
 import com.room.hackathonbackend.dto.UserLocationDto;
 import com.room.hackathonbackend.entity.Event;
+import com.room.hackathonbackend.entity.User;
 import com.room.hackathonbackend.repository.EventRepository;
+import com.room.hackathonbackend.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
@@ -16,9 +22,29 @@ import java.util.List;
 @AllArgsConstructor
 public class EventService {
     private EventRepository eventRepository;
+    private UserRepository userRepository;
     private ModelMapper modelMapper;
 
-    public List<EventDto> getEventsInRadius(UserLocationDto userLocation, Integer radius, Authentication authentication) {
+    public EventDto addEvent(EventPostDto eventPostDto, Authentication authentication) throws DirectException {
+        if (authentication.getPrincipal() instanceof Long longId) {
+            User user = userRepository.findById(longId)
+                    .orElseThrow(() -> new DirectException("User not found", "User with this id doesn't exists",
+                            DirectServerExceptionCode.D4003, HttpStatus.NOT_FOUND));
+            Event event = Event.builder()
+                    .creator(user)
+                    .latitude(eventPostDto.getLatitude())
+                    .longitude(eventPostDto.getLongitude())
+                    .name(eventPostDto.getName())
+                    .image(eventPostDto.getImage())
+                    .plannedOn(eventPostDto.getPlannedOn())
+                    .build();
+            eventRepository.save(event);
+            return modelMapper.map(event, EventDto.class);
+        }
+        return null;
+    }
+
+    public List<EventDto> getEventsInRadius(UserLocationDto userLocation, Integer radius) {
 
         List<EventDto> closeEvents = Arrays.asList();
 
