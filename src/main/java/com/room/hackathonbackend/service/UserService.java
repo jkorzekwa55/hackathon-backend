@@ -5,9 +5,9 @@ import com.befree.b3authauthorizationserver.B3authUserService;
 import com.directai.directaiexceptionhandler.DirectServerExceptionCode;
 import com.directai.directaiexceptionhandler.exception.DirectException;
 import com.directai.directaiexceptionhandler.exception.DirectExceptionFrame;
-import com.fasterxml.jackson.databind.ObjectReader;
-import com.room.hackathonbackend.dto.*;
-import com.room.hackathonbackend.entity.Event;
+import com.room.hackathonbackend.dto.EventResponseDto;
+import com.room.hackathonbackend.dto.UserDto;
+import com.room.hackathonbackend.dto.UserPutDto;
 import com.room.hackathonbackend.entity.EventResponse;
 import com.room.hackathonbackend.entity.User;
 import com.room.hackathonbackend.repository.EventRepository;
@@ -21,7 +21,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @Validated
@@ -34,6 +35,24 @@ public class UserService implements B3authUserService {
 
     public Optional<UserDto> getUser(Long id) {
        return userRepository.findById(id).map(user -> modelMapper.map(user, UserDto.class));
+    }
+
+    public UserDto fillDataUser(UserDataFillDto userDto, Authentication authentication) throws DirectException {
+        if(authentication.getPrincipal() instanceof Long longId){
+            User user = userRepository.findById(longId)
+                    .orElseThrow(() -> new DirectException("User not found", "User with this id doesn't exists",
+                            DirectServerExceptionCode.D4003, HttpStatus.NOT_FOUND));
+            User updatedUser = User.builder()
+                    .id(user.getId())
+                    .name(userDto.getName())
+                    .birthYear(userDto.getBirthYear())
+                    .socialMediaLink(userDto.getSocialMediaLink())
+                    .initialised(true)
+                    .build();
+            userRepository.save(updatedUser);
+            return modelMapper.map(updatedUser, UserDto.class);
+        }
+        return null;
     }
 
     @Override

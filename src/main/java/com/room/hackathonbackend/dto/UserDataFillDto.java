@@ -4,15 +4,14 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-@Setter
+
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserDto {
+public class UserDataFillDto {
     private String name;
     private int birthYear;
-    private Boolean disabled;
-    private Boolean initialised;
     private String socialMediaLink;
-    private String email;
+
 }

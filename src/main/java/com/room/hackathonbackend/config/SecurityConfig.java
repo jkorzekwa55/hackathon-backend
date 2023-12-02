@@ -1,8 +1,11 @@
 package com.room.hackathonbackend.config;
 
 import com.befree.b3authauthorizationserver.B3authSessionGenerator;
+import com.befree.b3authauthorizationserver.authentication.B3authUserTokenAuthenticationConverter;
+import com.befree.b3authauthorizationserver.config.configuration.B3authConfigurationLoader;
 import com.befree.b3authauthorizationserver.config.configurer.B3authAuthorizationServerConfigurer;
 import com.befree.b3authauthorizationserver.settings.B3authAuthorizationServerSettings;
+import com.befree.b3authauthorizationserver.web.B3authUserAuthorizationEndpointFilter;
 import com.nimbusds.jose.Algorithm;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
@@ -17,12 +20,15 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter;
 
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
@@ -56,12 +62,18 @@ public class SecurityConfig {
     @Order(2)
     public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http)
             throws Exception {
+
+        AuthenticationManager authenticationManager = new TempAuthenticationManager(B3authConfigurationLoader.getJwtGenerator(http),
+                B3authConfigurationLoader.getUserService(http),
+                B3authConfigurationLoader.getSessionService(http));
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((authorize) -> authorize
                         .requestMatchers("/b3auth/**").permitAll()
                         .anyRequest().authenticated()
                 )
+                .addFilterBefore(new B3authUserAuthorizationEndpointFilter(new B3authUserTokenAuthenticationConverter(),
+                        authenticationManager), AbstractPreAuthenticatedProcessingFilter.class)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .httpBasic(AbstractHttpConfigurer::disable);
 
