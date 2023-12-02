@@ -19,7 +19,7 @@ public class EventDto {
 
     private Long id;
     private String name;
-    private User creator;
+    private UserDto creator;
     private LocalDateTime plannedOn;
 
     private Blob image;
