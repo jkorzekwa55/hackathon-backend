@@ -13,12 +13,14 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/event")
+@RequestMapping("/api/event")
 @AllArgsConstructor
 public class EventController {
     private EventService eventService;
     @PostMapping("/area/{radius}")
     public ResponseEntity<List<EventDto>> getEventsInRadius(@RequestBody UserLocationDto userLocation, @PathVariable("radius") Integer radius){
+        System.out.println("user lat" + userLocation.getLatitude());
+        System.out.println("user lon" + userLocation.getLongitude());
         return ResponseEntity.ok(eventService.getEventsInRadius(userLocation, radius));
     }
 
