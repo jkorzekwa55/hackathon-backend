@@ -59,6 +59,7 @@ public class EventService {
             double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
             if (c * 6371 <= radius)
+                System.out.println(event.getName());
                 closeEvents.add(modelMapper.map(event, EventDto.class));
         }
 

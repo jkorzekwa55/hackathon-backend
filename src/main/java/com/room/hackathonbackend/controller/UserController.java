@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/api/user")
 @AllArgsConstructor
 public class UserController {
 
@@ -28,9 +28,9 @@ public class UserController {
         return ResponseEntity.ok(userService.fillDataUser(userDataFillDto, authentication));
     }
 
-    @GetMapping("/{id}/notifications")
-    public ResponseEntity<List<EventResponseDto>> getNotifications(@PathVariable("id") Long id, Authentication authentication) throws DirectException {
-        return ResponseEntity.ok(userService.getUserNotifications(id, authentication));
+    @GetMapping("/notifications")
+    public ResponseEntity<List<EventResponseDto>> getNotifications(Authentication authentication) throws DirectException {
+        return ResponseEntity.ok(userService.getUserNotifications(authentication));
     }
 
     @GetMapping("/{id}/events/{eventId}")
