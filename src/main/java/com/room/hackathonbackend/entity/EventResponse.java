@@ -14,6 +14,7 @@ public class EventResponse {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    private String name;
     private String message;
 
     @ManyToOne
