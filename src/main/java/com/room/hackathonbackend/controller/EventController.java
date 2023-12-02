@@ -17,7 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 public class EventController {
     private EventService eventService;
-    @GetMapping("/area/{radius}")
+    @PostMapping("/area/{radius}")
     public ResponseEntity<List<EventDto>> getEventsInRadius(@RequestBody UserLocationDto userLocation, @PathVariable("radius") Integer radius){
         return ResponseEntity.ok(eventService.getEventsInRadius(userLocation, radius));
     }
