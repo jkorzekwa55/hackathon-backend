@@ -1,13 +1,11 @@
 package com.room.hackathonbackend.entity;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.format.annotation.DateTimeFormat;
-
 import java.sql.Blob;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -27,6 +25,9 @@ public class Event {
     @ManyToOne
     private User creator;
     private LocalDateTime plannedOn;
+
+    @OneToMany(mappedBy = "event")
+    private Set<EventResponse> eventResponses;
 
     @Lob
     private Blob image;
