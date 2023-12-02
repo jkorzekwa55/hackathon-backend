@@ -6,6 +6,7 @@ import com.directai.directaiexceptionhandler.DirectServerExceptionCode;
 import com.directai.directaiexceptionhandler.exception.DirectException;
 import com.directai.directaiexceptionhandler.exception.DirectExceptionFrame;
 import com.room.hackathonbackend.dto.EventResponseDto;
+import com.room.hackathonbackend.dto.UserDataFillDto;
 import com.room.hackathonbackend.dto.UserDto;
 import com.room.hackathonbackend.dto.UserPutDto;
 import com.room.hackathonbackend.entity.EventResponse;
@@ -32,6 +33,24 @@ public class UserService implements B3authUserService {
 
     public Optional<UserDto> getUser(Long id) {
        return userRepository.findById(id).map(user -> modelMapper.map(user, UserDto.class));
+    }
+
+    public UserDto fillDataUser(UserDataFillDto userDto, Authentication authentication) throws DirectException {
+        System.out.println(authentication.getClass());
+        if(authentication.getPrincipal() instanceof Long longId){
+            User user = userRepository.findById(longId)
+                    .orElseThrow(() -> new DirectException("User not found", "User with this id doesn't exists",
+                            DirectServerExceptionCode.D4003, HttpStatus.NOT_FOUND));
+            User updatedUser = User.builder()
+                    .id(user.getId())
+                    .name(userDto.getName())
+                    .socialMediaLink(userDto.getSocialMediaLink())
+                    .initialised(true)
+                    .build();
+            userRepository.save(updatedUser);
+            return modelMapper.map(updatedUser, UserDto.class);
+        }
+        return null;
     }
 
     @Override

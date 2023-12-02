@@ -6,16 +6,13 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
-
-@Setter
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserDto {
+public class UserDataFillDto {
     private String name;
     private int birthYear;
-    private Boolean isDisabled;
-    private Boolean isInitialized;
     private String socialMediaLink;
-    private String email;
+
 }
