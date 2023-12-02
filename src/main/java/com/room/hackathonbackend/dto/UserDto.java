@@ -4,9 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.Date;
-
 @Setter
 @Getter
 @NoArgsConstructor
@@ -14,8 +11,8 @@ import java.util.Date;
 public class UserDto {
     private String name;
     private int birthYear;
-    private Boolean isDisabled;
-    private Boolean isInitialized;
+    private Boolean disabled;
+    private Boolean initialised;
     private String socialMediaLink;
     private String email;
 }

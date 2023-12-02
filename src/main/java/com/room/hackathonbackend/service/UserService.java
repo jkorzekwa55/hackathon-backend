@@ -4,22 +4,17 @@ import com.befree.b3authauthorizationserver.B3authUser;
 import com.befree.b3authauthorizationserver.B3authUserService;
 import com.directai.directaiexceptionhandler.DirectServerExceptionCode;
 import com.directai.directaiexceptionhandler.exception.DirectException;
-import com.directai.directaiexceptionhandler.exception.DirectExceptionFrame;
 import com.room.hackathonbackend.dto.EventResponseDto;
 import com.room.hackathonbackend.dto.UserDataFillDto;
 import com.room.hackathonbackend.dto.UserDto;
-import com.room.hackathonbackend.dto.UserPutDto;
-import com.room.hackathonbackend.entity.EventResponse;
 import com.room.hackathonbackend.entity.User;
 import com.room.hackathonbackend.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -36,7 +31,6 @@ public class UserService implements B3authUserService {
     }
 
     public UserDto fillDataUser(UserDataFillDto userDto, Authentication authentication) throws DirectException {
-        System.out.println(authentication.getClass());
         if(authentication.getPrincipal() instanceof Long longId){
             User user = userRepository.findById(longId)
                     .orElseThrow(() -> new DirectException("User not found", "User with this id doesn't exists",
@@ -44,6 +38,7 @@ public class UserService implements B3authUserService {
             User updatedUser = User.builder()
                     .id(user.getId())
                     .name(userDto.getName())
+                    .birthYear(userDto.getBirthYear())
                     .socialMediaLink(userDto.getSocialMediaLink())
                     .initialised(true)
                     .build();

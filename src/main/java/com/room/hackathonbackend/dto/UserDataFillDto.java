@@ -11,7 +11,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class UserDataFillDto {
     private String name;
-    private int birthDate;
+    private int birthYear;
     private String socialMediaLink;
 
 }
