@@ -8,6 +8,7 @@ import org.springframework.security.core.GrantedAuthority;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -27,6 +28,9 @@ public class User implements B3authUser {
     private String email;
     private String socialMediaLink;
     private LocalDateTime created;
+
+    @OneToMany(mappedBy = "creator")
+    private Set<Event> events;
 
     private boolean disabled;
     private boolean initialised;
