@@ -1,5 +1,6 @@
-package com.room.hackathonbackend.entity;
+package com.room.hackathonbackend.dto;
 
+import com.room.hackathonbackend.entity.User;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -12,23 +13,15 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
-@Entity
 @AllArgsConstructor
 @NoArgsConstructor
-public class Event {
+public class EventDto {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
-    @Column(length = 64)
     private String name;
-
-    @ManyToOne
-    private User creator;
+    private UserDto creator;
     private LocalDateTime plannedOn;
 
-    @Lob
     private Blob image;
 
     private double longitude;
@@ -36,6 +29,4 @@ public class Event {
 
     private boolean inProgress;
     private boolean happened;
-    public boolean getInProgress(){ return inProgress; }
-    public boolean getHappened(){ return happened; }
 }
