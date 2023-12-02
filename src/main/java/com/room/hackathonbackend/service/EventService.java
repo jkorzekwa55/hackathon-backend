@@ -15,6 +15,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -31,13 +34,18 @@ public class EventService {
             User user = userRepository.findById(longId)
                     .orElseThrow(() -> new DirectException("User not found", "User with this id doesn't exists",
                             DirectServerExceptionCode.D4003, HttpStatus.NOT_FOUND));
+
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+                    .withZone(ZoneId.of("UTC"));
+
             Event event = Event.builder()
                     .creator(user)
                     .latitude(eventPostDto.getLatitude())
                     .longitude(eventPostDto.getLongitude())
                     .name(eventPostDto.getName())
+                    .description(eventPostDto.getDescription())
                     .image(eventPostDto.getImage())
-                    .plannedOn(eventPostDto.getPlannedOn())
+                    .plannedOn(LocalDateTime.parse(eventPostDto.getPlannedOn(), formatter))
                     .build();
             eventRepository.save(event);
             return modelMapper.map(event, EventDto.class);

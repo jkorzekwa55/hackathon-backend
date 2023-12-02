@@ -16,9 +16,9 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class EventPostDto {
     private String name;
+    private String description;
     private double longitude;
     private double latitude;
     private Blob image;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS+0000")
-    private LocalDateTime plannedOn;
+    private String plannedOn;
 }

@@ -26,6 +26,7 @@ public class EventController {
 
     @PostMapping
     public ResponseEntity<EventDto> addEvent(@RequestBody EventPostDto eventPostDto, Authentication authentication) throws DirectException {
+        System.out.println(eventPostDto.getName());
         return ResponseEntity.ok(eventService.addEvent(eventPostDto, authentication));
     }
 }
