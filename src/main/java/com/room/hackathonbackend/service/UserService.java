@@ -16,7 +16,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -27,7 +26,6 @@ import java.util.Optional;
 public class UserService implements B3authUserService {
 
     private UserRepository userRepository;
-    private EventRepository eventRepository;
     private ModelMapper modelMapper;
 
     public Optional<UserDto> getUser(Long id) {
@@ -93,24 +91,5 @@ public class UserService implements B3authUserService {
         return null;
     }
 
-    public List<EventDto> getEventsInRadius(UserLocationDto userLocation, Integer radius, Authentication authentication) {
 
-        List<EventDto> closeEvents = Arrays.asList();
-
-        for (Event event : eventRepository.findAll()) {
-            double dLat = Math.toRadians(event.getLatitude() - userLocation.getLatitude());
-            double dLon = Math.toRadians(event.getLongitude() - userLocation.getLongitude());
-
-            double lat1 = Math.toRadians(userLocation.getLatitude());
-            double lat2 = Math.toRadians(event.getLatitude());
-
-            double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.sin(dLon / 2) * Math.sin(dLon / 2) * Math.cos(lat1) * Math.cos(lat2);
-            double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-
-            if (c * 6371 <= radius)
-                closeEvents.add(modelMapper.map(event, EventDto.class));
-        }
-
-        return closeEvents;
-    }
 }
