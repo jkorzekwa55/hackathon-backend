@@ -34,6 +34,7 @@ public class EventResponseService {
                             DirectServerExceptionCode.D4003, HttpStatus.NOT_FOUND));
             EventResponse eventResponse = EventResponse.builder()
                     .sender(user)
+                    .receiver(event.getCreator())
                     .message(responsePostDto.getMessage())
                     .event(event)
                     .build();
