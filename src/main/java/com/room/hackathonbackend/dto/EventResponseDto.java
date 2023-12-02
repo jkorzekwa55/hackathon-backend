@@ -18,5 +18,5 @@ public class EventResponseDto {
     private Long id;
     private String message;
     private UserDto sender;
-    private EventDto eventDto;
+    private EventDto event;
 }
